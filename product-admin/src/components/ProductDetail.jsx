@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase, INFO_TYPES, errorMessage } from '../supabase.js'
+import { supabase, INFO_TYPES, errorMessage, NO_WRITE_PERMISSION } from '../supabase.js'
 
 const won = new Intl.NumberFormat('ko-KR')
 const EMPTY_INFO = { info_type: INFO_TYPES[0], condition: '', content: '' }
@@ -16,13 +16,18 @@ export default function ProductDetail({ product, onChanged, onDeleted }) {
     rows: infos.filter((i) => i.info_type === type).sort((a, b) => a.id - b.id),
   })).filter((g) => g.rows.length > 0)
 
-  async function run(action) {
+  async function run(action, { expectRows = false } = {}) {
     setBusy(true)
     setError('')
-    const { error } = await action()
+    const { data, error } = await action()
     setBusy(false)
     if (error) {
       setError(errorMessage(error))
+      return false
+    }
+    // RLS에 막힌 삭제는 오류 없이 0건으로 끝나므로 지워진 행이 있는지 확인한다
+    if (expectRows && !data?.length) {
+      setError(NO_WRITE_PERMISSION)
       return false
     }
     return true
@@ -31,7 +36,9 @@ export default function ProductDetail({ product, onChanged, onDeleted }) {
   async function deleteProduct() {
     const msg = `${product.product_code} ${product.name} 상품을 삭제할까요?\n상품안내 ${infos.length}건도 함께 삭제되며 되돌릴 수 없습니다.`
     if (!window.confirm(msg)) return
-    const ok = await run(() => supabase.from('products').delete().eq('product_code', product.product_code))
+    const ok = await run(() => supabase.from('products').delete().eq('product_code', product.product_code).select(), {
+      expectRows: true,
+    })
     if (ok) onDeleted()
   }
 
@@ -56,7 +63,7 @@ export default function ProductDetail({ product, onChanged, onDeleted }) {
 
   async function deleteInfo(row) {
     if (!window.confirm(`[${row.info_type}] ${row.content}\n이 안내를 삭제할까요?`)) return
-    const ok = await run(() => supabase.from('product_infos').delete().eq('id', row.id))
+    const ok = await run(() => supabase.from('product_infos').delete().eq('id', row.id).select(), { expectRows: true })
     if (ok) onChanged()
   }
 

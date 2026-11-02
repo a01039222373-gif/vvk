@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { supabase, isConfigured, CATEGORIES, errorMessage } from './supabase.js'
+import { supabase, isConfigured, keyProblem, CATEGORIES, errorMessage } from './supabase.js'
 import ProductList from './components/ProductList.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import ProductForm from './components/ProductForm.jsx'
@@ -54,18 +54,14 @@ export default function App() {
     return (
       <main className="setup">
         <h1>상품 관리</h1>
-        <p>Supabase 연결 정보가 없습니다.</p>
-        <ol>
+        {keyProblem ? <p className="error">{keyProblem}</p> : <p>Supabase 연결 정보가 없습니다.</p>}
+        <ul>
           <li>
-            <code>.env.example</code>을 <code>.env.local</code>로 복사합니다.
+            내 PC: <code>.env.local</code>에 <code>VITE_SUPABASE_URL</code>과 <code>VITE_SUPABASE_PUBLISHABLE_KEY</code>를
+            채우고 <code>npm run dev</code>를 다시 실행합니다.
           </li>
-          <li>
-            <code>SUPABASE_URL</code>과 <code>SUPABASE_SERVICE_ROLE_KEY</code>를 채웁니다.
-          </li>
-          <li>
-            개발 서버를 다시 시작합니다 (<code>npm run dev</code>).
-          </li>
-        </ol>
+          <li>Vercel: 프로젝트 Settings → Environment Variables에 같은 두 값을 넣고 다시 배포(Redeploy)합니다.</li>
+        </ul>
       </main>
     )
   }

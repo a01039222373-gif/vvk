@@ -336,6 +336,10 @@ tbody tr.selected {
 }
 
 @media (max-width: 800px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
   .layout,
   .grid {
     grid-template-columns: 1fr;

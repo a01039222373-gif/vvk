@@ -1,30 +1,47 @@
-# 상품 관리 (로컬 전용)
+# 상품 관리
 
 Supabase의 `products`, `product_infos`, `shipping_policies` 테이블을 조회·검색·추가·삭제하는 React(Vite) 화면.
-테이블은 `docs/dummy/supabase/01_schema.sql`로 만든다.
+Vercel에 정적 사이트로 배포하며, 로그인 없이 바로 쓴다.
 
-## 처음 한 번
+## 구조와 주의점
 
-1. `.env.example`을 `.env.local`로 복사하고 값을 채운다
-   - `SUPABASE_URL`: Project Settings > API > Project URL
-   - `SUPABASE_SERVICE_ROLE_KEY`: Project Settings > API Keys 의 `service_role` 키 (또는 `sb_secret_...`)
-2. 패키지 설치: `npm install`
+- 브라우저가 Supabase에 직접 요청한다. 브라우저에 들어가는 키는 공개용 publishable(anon) 키뿐이다
+- 누가 무엇을 할 수 있는지는 Supabase RLS 정책이 정한다
+  - 읽기: 누구나 (`01_schema.sql`)
+  - 상품·상품안내 추가·삭제: 누구나 (`04_public_write.sql`)
+- **로그인이 없으므로 사이트 주소를 아는 사람은 누구나 상품을 추가·삭제할 수 있다.**
+  publishable 키도 사이트 코드에 드러나므로 사이트를 거치지 않고 직접 바꾸는 것도 가능하다.
+  가상 데이터 실습용으로만 쓰고, 주소는 공유하지 않는다
+- service_role 키·secret 키는 이 앱 어디에도 쓰지 않는다
 
-## 실행
+## 1. Supabase 준비 (한 번만)
 
-```
-npm run dev
-```
+1. SQL Editor에서 `docs/dummy/supabase/01_schema.sql`, `02_seed.sql` 실행 (이미 했다면 생략)
+2. 같은 곳에서 `docs/dummy/supabase/04_public_write.sql` 실행 (추가·삭제 허용)
+3. Project Settings → API (API Keys) 에서 두 값 복사
+   - Project URL
+   - publishable 키(`sb_publishable_...`) 또는 anon 키
 
-브라우저에서 http://localhost:5173 을 연다.
+## 2. Vercel 배포
 
-## 키를 다루는 방식
+1. https://vercel.com 에서 **Add New → Project** → GitHub 저장소 `vvk` 선택(Import)
+2. **Root Directory** 를 `product-admin` 으로 지정 (Framework Preset은 Vite로 자동 인식)
+3. **Environment Variables** 에 추가
 
-- 브라우저는 `/supabase`로만 요청하고, 개발 서버(vite.config.js)가 Supabase로 넘기면서 키를 붙인다.
-  그래서 키가 브라우저 코드에 들어가지 않는다.
-- 이 방식은 `npm run dev`(또는 `npm run preview`)로 띄운 개발 서버에서만 동작한다. 빌드 결과물을 다른 곳에 배포하면 안 된다.
-- service_role 키는 RLS를 무시하고 모든 데이터를 바꿀 수 있다. `.env.local`은 절대 공유하거나 커밋하지 않는다.
-- 개발 서버는 localhost에만 열려 있어 같은 네트워크의 다른 기기에서는 접속할 수 없다.
+   | Name | Value |
+   |---|---|
+   | `VITE_SUPABASE_URL` | Project URL |
+   | `VITE_SUPABASE_PUBLISHABLE_KEY` | publishable 키 또는 anon 키 |
+
+4. **Deploy**. 배포 후 받은 주소로 접속
+
+환경변수를 나중에 넣거나 바꿨다면 Deployments → 최신 배포 → **Redeploy** 해야 반영된다.
+(`VITE_` 값은 빌드할 때 코드에 들어가기 때문)
+
+## 내 PC에서 실행 (선택)
+
+1. `.env.local` 에 위 두 값을 넣고 저장
+2. `npm install` 후 `npm run dev`, http://localhost:5173 접속
 
 ## 기능
 
@@ -33,4 +50,5 @@ npm run dev
 - 상품 추가 (상품코드 `P-0000` 형식, 중복 시 안내)
 - 상품 삭제 (상품안내도 함께 삭제됨)
 - 상품안내 추가·삭제
+- `04_public_write.sql`을 실행하지 않았으면 추가·삭제 시 권한 안내가 표시된다
 - 수정 기능은 없음 (Supabase 대시보드 Table Editor에서 수정)
