@@ -1,0 +1,8 @@
+node_modules/
+dist/
+# 키가 들어 있는 파일
+.env
+.env.local
+.env.*.local
+# macOS 시스템 파일
+.DS_Store
