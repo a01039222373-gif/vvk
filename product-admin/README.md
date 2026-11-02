@@ -31,7 +31,7 @@ Vercel에 정적 사이트로 배포하며, 로그인 없이 바로 쓴다.
    | Name | Value |
    |---|---|
    | `VITE_SUPABASE_URL` | Project URL |
-   | `VITE_SUPABASE_PUBLISHABLE_KEY` | publishable 키 또는 anon 키 |
+   | `VITE_SUPABASE_ANON_KEY` | anon 키 (또는 publishable 키) |
 
 4. **Deploy**. 배포 후 받은 주소로 접속
 
@@ -40,7 +40,7 @@ Vercel에 정적 사이트로 배포하며, 로그인 없이 바로 쓴다.
 
 ## 내 PC에서 실행 (선택)
 
-1. `.env.local` 에 위 두 값을 넣고 저장
+1. `.env.local` 에 URL과 anon 키를 넣고 저장 (service_role 키 칸은 보관용, 웹사이트는 사용하지 않음)
 2. `npm install` 후 `npm run dev`, http://localhost:5173 접속
 
 ## 기능

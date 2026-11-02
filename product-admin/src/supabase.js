@@ -2,7 +2,8 @@ import { createClient } from '@supabase/supabase-js'
 
 // VITE_ 로 시작하는 값은 빌드할 때 브라우저 코드에 들어간다. 그래서 공개해도 되는 키만 쓴다
 const url = import.meta.env.VITE_SUPABASE_URL
-const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+// anon 키 이름을 기본으로 쓰고, 예전 이름(PUBLISHABLE)도 받아준다
+const key = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 
 // 비밀 키(service_role, sb_secret_)가 잘못 들어오면 쓰지 않고 경고한다
 function findKeyProblem(k) {

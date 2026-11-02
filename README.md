@@ -17,6 +17,6 @@
 ## 시작하기
 
 1. Supabase SQL Editor에서 `docs/dummy/supabase/01_schema.sql`, `02_seed.sql`, `04_public_write.sql`을 차례로 실행
-2. Vercel에서 이 저장소를 Import, Root Directory는 `product-admin`, 환경변수 `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` 입력 후 배포
+2. Vercel에서 이 저장소를 Import, Root Directory는 `product-admin`, 환경변수 `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` 입력 후 배포
 
 단계별 안내는 [product-admin/README.md](product-admin/README.md) 참고.

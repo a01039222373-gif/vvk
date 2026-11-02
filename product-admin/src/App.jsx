@@ -57,7 +57,7 @@ export default function App() {
         {keyProblem ? <p className="error">{keyProblem}</p> : <p>Supabase 연결 정보가 없습니다.</p>}
         <ul>
           <li>
-            내 PC: <code>.env.local</code>에 <code>VITE_SUPABASE_URL</code>과 <code>VITE_SUPABASE_PUBLISHABLE_KEY</code>를
+            내 PC: <code>.env.local</code>에 <code>VITE_SUPABASE_URL</code>과 <code>VITE_SUPABASE_ANON_KEY</code>를
             채우고 <code>npm run dev</code>를 다시 실행합니다.
           </li>
           <li>Vercel: 프로젝트 Settings → Environment Variables에 같은 두 값을 넣고 다시 배포(Redeploy)합니다.</li>
