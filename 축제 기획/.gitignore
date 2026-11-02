@@ -1,7 +1,0 @@
-node_modules
-dist
-.vercel
-# 키가 들어 있는 파일
-.env
-.env.local
-.env.*.local

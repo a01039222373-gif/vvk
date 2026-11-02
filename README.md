@@ -13,8 +13,6 @@
 | `docs/dummy/supabase/` | Supabase SQL — `01_schema.sql`(테이블), `02_seed.sql`(데이터), `03_allergy_queries.sql`(알레르기 조회), `04_public_write.sql`(로그인 없이 추가·삭제 허용) |
 | `research/qa_dummy_questions.md` | RAG 적용 전후 비교용 질문 10개 |
 | `product-admin/` | 상품 조회 · 검색 · 추가 · 삭제 화면 (React + Vite, Vercel 배포, 로그인 없음) |
-| `축제 기획/` | 컨셉과 조건을 적으면 축제 기획안 초안을 만드는 화면 (React + Vite, API 키 없음, Vercel 배포) — [README](축제%20기획/README.md) |
-
 ## 시작하기
 
 1. Supabase SQL Editor에서 `docs/dummy/supabase/01_schema.sql`, `02_seed.sql`, `04_public_write.sql`을 차례로 실행
